@@ -1,8 +1,5 @@
 *.csv
 *.xls
-*.json
 *.pdf
-.env
-
-config/config.js
+config/
 node_modules/
