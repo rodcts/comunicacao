@@ -1,4 +1,4 @@
-const { authenticate, downloadCSVFile } = require('./driver');
+const { authenticate, downloadCSVFile } = require('./drive/driver');
 const { processarCSV } = require('./csvProcessor');
 const { gerarPDF } = require('./pdfGenerator');
 const { enviarEmail } = require('./email');
@@ -9,7 +9,7 @@ async function main() {
     try {
         // Autentica e baixa o CSV
         const auth = await authenticate();
-
+        return
         const arquivoCSV = await downloadCSVFile(auth);
         
         // Processa o CSV
