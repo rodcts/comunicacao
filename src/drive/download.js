@@ -1,7 +1,7 @@
 const { google } = require("googleapis");
 const fs = require("fs");
 const path = require("path");
-
+const { dia, mes, ano } = require("../date.js");
 /**
  * Função para listar e baixar o arquivo CSV do Google Drive
  * @param {*} auth
@@ -23,18 +23,34 @@ async function downloadCSVFile(auth) {
     throw new Error("Nada encontrado no Google Drive");
   }
 
-  const file = res.data.files.find((file) => file.name == "voluntarios.csv");
+  // Verifica se o arquivo existe no Drive
+  const file = files.find((file) => file.name == `voluntarios_${mes()}${ano()}.csv`);
   // Se o arquivo existir segue o processo
   if (file) {
-    const fileId = file.id;
-    fs.createWriteStream(path.join(__dirname, "../uploads", file.name));
+    console.log(`Foi encontrado o arquivo ${file.name} buscado`);
 
-    await drive.files.export({
+    const fileId = file.id;
+    // faz download do arquivo    
+    const destPath = fs.createWriteStream(path.join(__dirname, "../uploads", file.name));
+
+    const res = await drive.files.export({
       fileId,
       mimeType: "text/csv",
+    },{ responseType: "stream" });
+
+    await new Promise((resolve, reject) => {
+      res.data
+        .on("end", () => {
+          console.log(`✅ Arquivo salvo em: ${destPath}`);
+          resolve();
+        })
+        .on("error", (err) => {
+          console.error("Erro ao salvar o arquivo:", err);
+          reject(err);
+        })
+        .pipe(destPath);
     });
 
-    console.log(`Arquivo ${file.name} baixado com sucesso!`);
     return path.join(__dirname, "../uploads", file.name);
   } else {
     throw new Error("Arquivo CSV não encontrado no Google Drive");
