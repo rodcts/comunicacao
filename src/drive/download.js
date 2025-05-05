@@ -16,7 +16,7 @@ async function downloadCSVFile(auth) {
     fields: "files(id, name, mimeType)",
   });
   const { files } = res.data;
-  console.log(`Foram encontrados ${files.length} arquivos com o nome buscado`);
+  console.log(`✅ Foram encontrados ${files.length} arquivos com o nome buscado`);
 
   // Trata se nao encontrar nada no Drive
   if (!files || files.length == 0) {
@@ -27,7 +27,7 @@ async function downloadCSVFile(auth) {
   const file = files.find((file) => file.name == `voluntarios_${mes()}${ano()}.csv`);
   // Se o arquivo existir segue o processo
   if (file) {
-    console.log(`Foi encontrado o arquivo ${file.name} buscado`);
+    console.log(`✅ Foi encontrado o arquivo ${file.name} buscado`);
 
     const fileId = file.id;
     // faz download do arquivo    
