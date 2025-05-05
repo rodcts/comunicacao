@@ -6,15 +6,15 @@ const requestAPI = async () => {
   // TODO add as funçoes
   console.log("Autenticando...");
   const oAuth = await authenticate();
-  console.log("Autenticado...");
+  console.log("✅ Autenticado...");
 
   console.log("Gerando token de acesso...");
   const accessToken = await getAccessToken(oAuth);
-  console.log("Token gerado com sucesso!");
+  console.log("✅ Token gerado com sucesso!");
 
   console.log("Baixando arquivo CSV...");
   const csvFile = await downloadCSVFile(oAuth);
-  console.log("Baixado arquivo CSV...");
+  console.log("✅ Baixado arquivo CSV...");
 
   try {
     const results = await Promise.all([authenticate(), getAccessToken(), downloadCSVFile()]);
