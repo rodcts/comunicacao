@@ -2,4 +2,5 @@
 on:
   pull_request:
     branches:
-      - main
+      - main  
+      - develop
